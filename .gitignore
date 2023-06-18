@@ -3,3 +3,4 @@ _cacache/
 _locks/
 _logs/
 .env
+anonymous-cli-metrics.json
