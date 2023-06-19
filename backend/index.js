@@ -1,4 +1,5 @@
 import express  from "express";
+import path from 'path'
 import mongodb from './config/db.js';
 import dotenv from 'dotenv';
 import userRoute from './Routes/userRoute.js';
@@ -11,7 +12,8 @@ dotenv.config()
 mongodb()
 
 const app = express();
-
+const currentPath = path.resolve()
+const __dirname = path.dirname(currentPath);
 app.use(express.json());
 app.use('/api/users',userRoute);
 app.use('/api/products',productRoutes);
@@ -21,6 +23,18 @@ app.use('/api/upload', uploadRoutes)
 app.get('/api/config/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 )
+
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.resolve(__dirname, 'frontend', 'build')))
+
+//   app.get('/', (req, res) =>
+//     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+//   )
+// } else {
+//   app.get('/', (req, res) => {
+//     res.send('API is running....')
+//   })
+// }
 
 app.use(notFound)
 app.use(errorHandler)
